@@ -22,6 +22,24 @@
 
   <style>
 
+    /* defines variables that can be changed in css */
+    :root{
+      --base: #ffc600;
+      --spacing: 10px;
+      --blur: 10px;
+    }
+
+    /* styles image based on variables */
+    img {
+      padding: var(--spacing);
+      background: var(--base);
+      filter: blur(var(--blur));
+    }
+
+    .h1 {
+      color: var(--base);
+    }
+
     /*
       misc styles, nothing to do with CSS variables
     */
@@ -45,6 +63,22 @@
   </style>
 
   <script>
+    //gets all of the inputs that can be modified on page
+    const inputs = document.querySelectorAll('.controls input');
+
+    function handleUpdate(){
+      const suffix = this.dataset.sizing || '';
+
+      document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+
+      console.log(this.value);
+    };
+
+    //triggers whenever input updated and mouse let go
+    inputs.forEach(input => input.addEventListener('change', handleUpdate));
+    //triggers whenever mouse moves input at all
+    inputs.forEach(input => input.addEventListener('mousemove', handleUpdate));
+
   </script>
 
 </body>
