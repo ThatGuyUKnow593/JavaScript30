@@ -59,6 +59,28 @@
 
 <script>
 
+  //adds animation and sound when key initially pressed
+  window.addEventListener('keydown', function(e) {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`); //selects the audio that matches key Pressed
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`); //selects the div to add animation later
+
+    if(!audio) return; //if key pressed doesn't have matching audio, this will skip it
+
+    audio.currentTime = 0; //resets audio timer to cancel loop
+    audio.play();  //plays audio
+
+    key.classList.add('playing'); //adds playing class for CSS and animation styles
+  });
+
+  //gets rid of animation after keys pressed
+  function removeTransition(e) {
+    if(e.propertyName !== 'transform') return; //does following commands after transform is complete
+
+    this.classList.remove('playing'); //removes playing class after transition is complete to reverse
+  };
+
+  const keys = document.querySelectorAll('.key');
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition)); //listens for transition to end then reverses transition
 </script>
 
 
