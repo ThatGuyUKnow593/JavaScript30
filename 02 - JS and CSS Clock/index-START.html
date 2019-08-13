@@ -62,12 +62,52 @@
       background: black;
       position: absolute;
       top: 50%;
+      transition: all 0.05s;
+
+      //sets the origin to be center of clock for hands
+      transform-origin: 100%;
+
+      //rotates the hands 90 degrees to start at 12 exactly
+      transform: rotate(90deg);
+
+      //gives an animation to each tick
+      transition-timing-function: cubic-bezier(0, 2.01, 0.54, 0.88);
     }
 
   </style>
 
   <script>
+    //selects each of the different hands
+    const secondHand = document.querySelector('.second-hand');
+    const minuteHand = document.querySelector('.min-hand');
+    const hourHand = document.querySelector('.hour-hand');
 
+    function setDate() {
+      //gets the current time and date based on browser
+      const now = new Date();
+
+      //seconds code
+      //gets seconds out of the now constant
+      const seconds = now.getSeconds();
+      //determines the angle at which the hand is plus 90 degrees to account for css rotation
+      const secondsDegrees = ((seconds/60) * 365) + 90;
+      //transforms the hands
+      secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+
+      //minutes code
+      const minutes = now.getMinutes();
+      const minutesDegrees = ((minutes/60) * 365) + 90;
+      minuteHand.style.transform = `rotate(${minutesDegrees}deg)`;
+
+      //hours code
+      const hours = now.getHours();
+      const hoursDegrees = ((hours/24) * 365) + 90;
+      hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
+
+      console.log(now);
+    }
+    //sets a timer to trigger setDate function every second
+    setInterval(setDate, 1000);
 
   </script>
 </body>
