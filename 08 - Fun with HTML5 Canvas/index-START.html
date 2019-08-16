@@ -7,6 +7,73 @@
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
 <script>
+  //select the canvas
+  const canvas = document.querySelector("#draw");
+  //set canvas to 2d
+  const ctx = canvas.getContext('2d');
+
+  //set canvas width/height to fit window
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  //set basic modes for drawing
+  ctx.strokeStyle = '#BADA55';
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.globalCompositeOperation = 'multiply';
+
+  //set drawing and beginning x and y
+  let isDrawing = false;
+  let lastX = 0;
+  let lastY = 0;
+  let hue = 0;
+  let direction = true;
+
+  //actual drawing function
+  function draw(e) {
+    //stop function if not drawing
+    if(!isDrawing) return;
+
+    //change color based on hue value
+    ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+    ctx.beginPath();
+    //start from
+    ctx.moveTo(lastX, lastY);
+    //go to
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+
+    //set where cursor last was
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+
+    //increment hue but reset after hits 360
+    hue++;
+    if(hue >= 360){
+      hue = 0;
+    }
+
+    //flip direction for line width if above 100 or below 1
+    if(ctx.lineWidth >= 100 || ctx.lineWidth <= 1){
+      direction = !direction;
+    }
+
+    //increment or decrement width based on direction bool
+    if(direction) {
+      ctx.lineWidth++;
+    }else {
+      ctx.lineWidth--;
+    }
+  };
+
+  //events listening for mouse to start drawing
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mousedown', (e) => {
+      isDrawing = true;
+      [lastX, lastY] = [e.offsetX, e.offsetY];
+    });
+  canvas.addEventListener('mouseup', () => isDrawing = false);
+  canvas.addEventListener('mouseout', () => isDrawing = false);
+
 </script>
 
 <style>
