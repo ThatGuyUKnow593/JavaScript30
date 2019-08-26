@@ -6,7 +6,29 @@
   <script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>
 </head>
 <body>
+  <input class="codeInput"></input>
+
 <script>
+  const customCodeInput = document.querySelector('.codeInput');
+
+  const pressed = [];
+  var secretInput = "test";
+
+  function secretCode() {
+    secretInput = this.value;
+  };
+
+  window.addEventListener('keyup', (e) => {
+    pressed.push(e.key);
+    pressed.splice(-secretInput.length - 1, pressed.length - secretInput.length);
+
+    if(pressed.join('').includes(secretInput)){
+      cornify_add();
+    }
+  });
+
+  customCodeInput.addEventListener('change', secretCode);
+
 </script>
 </body>
 </html>
