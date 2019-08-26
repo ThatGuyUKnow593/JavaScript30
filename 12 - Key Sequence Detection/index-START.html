@@ -9,24 +9,34 @@
   <input class="codeInput"></input>
 
 <script>
+  //selects the input on the page
   const customCodeInput = document.querySelector('.codeInput');
 
+  //stores the pressed keys
   const pressed = [];
+  //this is the input word/phrase that triggers
   var secretInput = "test";
 
+  //changes the phrase/input
   function secretCode() {
     secretInput = this.value;
   };
 
+  //listens for key presses
   window.addEventListener('keyup', (e) => {
+    //stores last pressed key into pressed array
     pressed.push(e.key);
+    //makes sure the pressed array doesn't store everything
     pressed.splice(-secretInput.length - 1, pressed.length - secretInput.length);
 
+    //checks the pressed array to see if it includes the secret input
     if(pressed.join('').includes(secretInput)){
+      //this is what runs after the secret code has been entered
       cornify_add();
     }
   });
 
+  //triggers the secretCode function that changes the secretInput
   customCodeInput.addEventListener('change', secretCode);
 
 </script>
